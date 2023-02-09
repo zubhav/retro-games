@@ -19,7 +19,7 @@ export default function Snake() {
         </Show>
       </p>
 
-      <canvas height="300" width="300" id="snake"></canvas>
+      <canvas height="600" width="600" id="snake"></canvas>
     </main>
   );
 }

@@ -1,8 +1,8 @@
 import { createSignal } from "solid-js";
 
-const COLORS: string[] = ["blue", "red", "yellow", "purple", "aqua", "orange"];
-const frameRate: number = 70;
-const pixelSize: number = 10;
+const COLORS = ["red", "orange", "yellow", "green", "aqua", "blue", "purple"];
+const frameRate: number = 65;
+const pixelSize: number = 30;
 
 const [score, setScore] = createSignal(0);
 const [highScore, setHighScore] = createSignal(0);
@@ -19,8 +19,8 @@ class Game {
 
   constructor() {
     this.canvas = document.getElementById("snake") as HTMLCanvasElement;
-    this.canvas.width = 300;
-    this.canvas.height = 300;
+    this.canvas.width = 600;
+    this.canvas.height = 600;
     this.context = this.canvas.getContext("2d") as CanvasRenderingContext2D;
 
     this.interval = null;
@@ -31,11 +31,18 @@ class Game {
     this.buildSnake();
 
     document.addEventListener("keydown", (e: KeyboardEvent) => {
-      e.preventDefault();
-
       if (this.paused) {
         this.unpause();
       }
+
+      if (
+        ![38, 40, 37, 39].includes(e.keyCode) &&
+        !["Escape", "Spacebar"].includes(e.key)
+      ) {
+        return;
+      }
+
+      e.preventDefault();
 
       if (e.keyCode === 38) {
         // up arrow pressed
@@ -93,31 +100,40 @@ class Game {
 
   buildSnake = function () {
     this.snake = [
-      new Pixel(pixelSize, pixelSize, "blue", 90, 50),
-      new Pixel(pixelSize, pixelSize, "red", 80, 50),
-      new Pixel(pixelSize, pixelSize, "green", 70, 50),
+      new Pixel(pixelSize, pixelSize, COLORS[0], 90, pixelSize * 2),
+      new Pixel(pixelSize, pixelSize, COLORS[1], 90 - pixelSize, pixelSize * 2),
+      new Pixel(
+        pixelSize,
+        pixelSize,
+        COLORS[2],
+        90 - pixelSize * 2,
+        pixelSize * 2
+      ),
     ];
   };
 
   incrementSnake = function (snake, snakeDirection) {
     let newX, newY;
 
+    const oldX = snake[0].x;
+    const oldY = snake[0].y;
+
     switch (snakeDirection) {
       case "r":
-        newX = snake[0].x - 10;
-        newY = snake[0].y;
+        newX = oldX - pixelSize;
+        newY = oldY;
         break;
       case "l":
-        newX = snake[0].x + 10;
-        newY = snake[0].y;
+        newX = oldX + pixelSize;
+        newY = oldY;
         break;
       case "u":
-        newX = snake[0].x;
-        newY = snake[0].y + 10;
+        newX = oldX;
+        newY = oldY + pixelSize;
         break;
       case "d":
-        newX = snake[0].x;
-        newY = snake[0].y - 10;
+        newX = oldX;
+        newY = oldY - pixelSize;
         break;
       default:
         break;
@@ -173,8 +189,15 @@ class Game {
 
   randomizeMouse = function () {
     this.mouseCoordinates = {
-      x: Math.round((Math.random() * (290 - 10) + 0) / 10) * 10,
-      y: Math.round((Math.random() * (290 - 10) + 0) / 10) * 10,
+      x:
+        Math.round(
+          (Math.random() * (this.canvas.width - 10 - pixelSize) + 0) / pixelSize
+        ) * pixelSize,
+      y:
+        Math.round(
+          (Math.random() * (this.canvas.height - 10 - pixelSize) + 0) /
+            pixelSize
+        ) * pixelSize,
     };
   };
 
@@ -197,16 +220,16 @@ class Game {
       if (i === this.snake.length - 1) {
         switch (snakeDirection) {
           case "r":
-            this.snake[i].x += 10;
+            this.snake[i].x += pixelSize;
             break;
           case "l":
-            this.snake[i].x -= 10;
+            this.snake[i].x -= pixelSize;
             break;
           case "u":
-            this.snake[i].y -= 10;
+            this.snake[i].y -= pixelSize;
             break;
           case "d":
-            this.snake[i].y += 10;
+            this.snake[i].y += pixelSize;
             break;
           default:
             break;
