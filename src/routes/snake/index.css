@@ -1,0 +1,40 @@
+canvas {
+  --angle: 0deg;
+  border: 15px solid;
+  border-image: conic-gradient(
+      from var(--angle),
+      red,
+      yellow,
+      lime,
+      aqua,
+      blue,
+      magenta,
+      red
+    )
+    1;
+  border-image-slice: 1;
+  animation: 10s rotate linear infinite;
+}
+
+@keyframes rotate {
+  to {
+    --angle: 360deg;
+  }
+}
+
+h1,
+p {
+  font-size: 24px;
+  text-align: center;
+}
+
+div {
+  display: flex;
+  justify-content: center;
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}

@@ -207,7 +207,7 @@ class Game {
     let mouse = new Pixel(
       pixelSize,
       pixelSize,
-      "black",
+      "#5a5a5a",
       this.mouseCoordinates.x,
       this.mouseCoordinates.y
     );

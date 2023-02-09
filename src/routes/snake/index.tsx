@@ -1,5 +1,6 @@
-import { createSignal, Show } from "solid-js";
+import { Show } from "solid-js";
 import { startGame, score, highScore } from "./game";
+import "./index.css";
 
 export default function Snake() {
   if (typeof document !== "undefined") {
@@ -18,8 +19,9 @@ export default function Snake() {
           - High Score: <b>{highScore()}</b>
         </Show>
       </p>
-
-      <canvas height="600" width="600" id="snake"></canvas>
+      <div>
+        <canvas height="600" width="600" id="snake"></canvas>
+      </div>
     </main>
   );
 }
